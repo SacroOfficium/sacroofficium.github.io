@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -40,36 +39,6 @@
             line-height: 1.6;
             scroll-behavior: smooth;
         }
-<!-- ======================================================================================================= -->
-
-<!--
-
-/* Ajuste para o logo/texto do cabeçalho */
-.logo {
-    font-size: clamp(16px, 4vw, 24px); /* Tamanho responsivo */
-    white-space: nowrap; /* Impede quebra de linha */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Adiciona "..." se truncar */
-    max-width: 70vw; /* Limita a largura */
-}
-
-
--->
-
-
-/* Ajuste para telas pequenas */
-@media (max-width: 480px) {
-    .logo {
-        max-width: 50vw; /* Reduz ainda mais em mobile */
-        font-size: 18px; /* Tamanho mínimo garantido */
-    }
-    
-    nav {
-        padding: 10px 0; /* Reduz espaçamento */
-    }
-}
-
-<!-- ======================================================================================================= -->
 
         /* Header Otimizado */
         header {
@@ -91,12 +60,16 @@
         }
         
         .logo {
-            font-size: 22px;
+            font-size: clamp(16px, 4vw, 22px); /* Tamanho responsivo */
             font-weight: 700;
             color: #660000;
             display: flex;
             align-items: center;
             gap: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60vw;
         }
         
         .nav-links {
@@ -110,6 +83,7 @@
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
+            white-space: nowrap;
         }
         
         .nav-links a:hover {
@@ -500,21 +474,17 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
-    	    text-decoration: none; /* Linha removida aqui */
+            text-decoration: none;
         }
         
         .social-links a:hover {
             transform: translateY(-5px);
-	    /* Efeito hover sem sublinhado */
-	    text-decoration: none; /* Garante que não apareça */
-	}
+            text-decoration: none;
+        }
 
-
-	.social-links a[href*="whatsapp"] i {
-    	    color: #25D366; /* Verde do WhatsApp */
-	}
-
-
+        .social-links a[href*="whatsapp"] i {
+            color: #25D366; /* Verde do WhatsApp */
+        }
         
         .social-links a[href*="instagram"] {
             background: linear-gradient(45deg, #f09433, #bc1888);
@@ -599,14 +569,47 @@
             color: #000;
         }
 
+        /* Menu Mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--secondary);
+            cursor: pointer;
+            z-index: 1001;
+        }
+
         /* Responsividade */
         @media (max-width: 768px) {
             .logo {
-                font-size: 18px;
+                max-width: 50vw;
+                font-size: clamp(14px, 4vw, 18px);
             }
             
             .nav-links {
-                gap: 15px;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
             }
             
             .hero {
@@ -630,16 +633,30 @@
                 padding: 12px;
             }
         }
+
+        @media (max-width: 480px) {
+            .logo {
+                max-width: 55vw;
+                font-size: 16px;
+            }
+            
+            nav {
+                padding: 10px 15px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
         <nav>
-            <div class="logo">
-                <span>Casinhas Açorianas <br>SACRO OFFICIUM</span>
+            <div class="logo" title="Casinhas Açorianas - Sacro Officium">
+                Casinhas Açorianas<br>Sacro Officium
             </div>
-            <div class="nav-links">
+            <button class="menu-toggle" aria-label="Abrir menu" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
                 <a href="#kits">Kits</a>
                 <a href="#depoimentos">Depoimentos</a>
                 <a href="#artesanato">Artesanato</a>
@@ -648,6 +665,7 @@
         </nav>
     </header>
 
+    <!-- Restante do código permanece igual -->
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
@@ -846,19 +864,9 @@
             </div>
             
             <div class="social-links">
-
-
- <!--              -->
-
-		<a href="https://wa.me/5548988117884" aria-label="WhatsApp" target="_blank">
-        	<i class="fab fa-whatsapp"></i> <!-- Ícone verde -->
-    		</a>
-
-
-
-
-
-
+                <a href="https://wa.me/5548988117884" aria-label="WhatsApp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> <!-- Ícone verde -->
+                </a>
                 <a 
                     href="https://instagram.com/sacroofficium" 
                     aria-label="Instagram da Sacro Officium"
@@ -883,5 +891,22 @@
     >
         <i class="fab fa-whatsapp"></i>
     </a>
+
+    <script>
+        // Menu Mobile Toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>
