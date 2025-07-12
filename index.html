@@ -40,7 +40,31 @@
             line-height: 1.6;
             scroll-behavior: smooth;
         }
-        
+<!-- ======================================================================================================= -->
+
+/* Ajuste para o logo/texto do cabeçalho */
+.logo {
+    font-size: clamp(16px, 4vw, 24px); /* Tamanho responsivo */
+    white-space: nowrap; /* Impede quebra de linha */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adiciona "..." se truncar */
+    max-width: 70vw; /* Limita a largura */
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 480px) {
+    .logo {
+        max-width: 50vw; /* Reduz ainda mais em mobile */
+        font-size: 18px; /* Tamanho mínimo garantido */
+    }
+    
+    nav {
+        padding: 10px 0; /* Reduz espaçamento */
+    }
+}
+
+<!-- ======================================================================================================= -->
+
         /* Header Otimizado */
         header {
             background-color: white;
